@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,4 +17,28 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
+});
+
+
+Route::get('/auth/redirect', function () {
+    return Socialite::driver('saml2')->redirect();
+});
+
+Route::post('/auth/callback', function () {
+    $user = Socialite::driver('saml2')->stateless()->user();
+    logger($user->user[0]->getAllAttributeValues());
+});
+
+Route::get('/auth/saml2/metadata', function () {
+    return Socialite::driver('saml2')->getServiceProviderMetadata();
+});
+
+Route::get('/auth/saml2/logout', function () {
+    $response = Socialite::driver('saml2')->logoutResponse();
+});
+
+Route::get('storage-link', function(){
+    Artisan::call('storage:link');
+    Artisan::call('optimize:clear');
+    Artisan::call('config:cache');
 });
