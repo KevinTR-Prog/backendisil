@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Artisan;
-
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -18,7 +17,6 @@ use Illuminate\Support\Facades\Artisan;
 Route::get('/', function () {
     return view('welcome');
 });
-
 
 Route::get('/auth/redirect', function () {
     return Socialite::driver('saml2')->redirect();
